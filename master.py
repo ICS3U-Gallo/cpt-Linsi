@@ -61,19 +61,14 @@ def moving():
         player_x += 2
 
     speed = 4
-    ball1_x += speed
-    ball2_x += speed
-    ball3_x -= speed
-    ball4_x -= speed
-    if ball1_x > WIDTH/2 + 3 * a:
-            ball1_x = WIDTH/2 - 3 * a
-    if ball2_x > WIDTH/2 + 3 * a:
-            ball2_x = WIDTH/2 - 3 * a
-    if ball3_x < WIDTH/2 - 3 * a:
-        ball3_x = WIDTH/2 + 3 * a
-    if ball4_x < WIDTH/2 - 3 * a:
-            ball4_x = WIDTH/2 + 3 * a
-
+    for x in balls_x[:2]:
+        x += speed
+        if x > WIDTH/2 + 3 * a:
+            x = WIDTH/2 - 3 * a
+    for x in balls_x[2:]:
+        x -= speed
+        if x < WIDTH/2 - 3 * a:
+            x = WIDTH/2 + 3 * a
 
 
 def on_draw():
@@ -163,10 +158,10 @@ def on_key_press(key, modifiers):
         while i < 4:
             if balls_x[i] - 12.5 < player_x < balls_x[i] + 12.5 and balls_y[i] - 12.5 < player_y < balls_y[i] + 12.5:
                 current_screen = "game_over"
-            else:
-                i += 1
+                break
+            i += 1
 
-        if ball1_x - 12.5 < player
+#        if ball1_x - 12.5 < playe
 
         if player_x > WIDTH/2 + 4.5 * a:
             current_screen = "game_win"
