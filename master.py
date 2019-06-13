@@ -61,14 +61,25 @@ def moving():
         player_x += 2
 
     speed = 4
-    for x in balls_x[:2]:
-        x += speed
-        if x > WIDTH/2 + 3 * a:
-            x = WIDTH/2 - 3 * a
-    for x in balls_x[2:]:
-        x -= speed
-        if x < WIDTH/2 - 3 * a:
-            x = WIDTH/2 + 3 * a
+    ball1_x += speed
+    ball2_x += speed
+    ball3_x -= speed
+    ball4_x -= speed
+    if ball1_x > WIDTH/2 + 3 * a:
+            ball1_x = WIDTH/2 - 3 * a
+    if ball2_x > WIDTH/2 + 3 * a:
+            ball2_x = WIDTH/2 - 3 * a
+    if ball3_x < WIDTH/2 - 3 * a:
+        ball3_x = WIDTH/2 + 3 * a
+    if ball4_x < WIDTH/2 - 3 * a:
+            ball4_x = WIDTH/2 + 3 * a
+
+    i = 0
+    while i < 4:
+        if player_x > balls_x[i] - 12.5 and player_x < balls_x[i] + 12.5 and player_y > balls_y[i] - 12.5 and player_y < balls_y[i] + 12.5:
+            current_screen = "game_over"
+            break
+        i += 1
 
 
 def on_draw():
@@ -121,23 +132,24 @@ def draw_play():
 
 
 def draw_game_over():
-    arcade.set_background_color(arcade.color.DARK_GREEN)
+    arcade.set_background_color(arcade.color.DARK_GRAY)
     arcade.draw_text("Game Over", WIDTH/2, HEIGHT/2,
                      arcade.color.BLACK, font_size=48, anchor_x="center")
-    arcade.draw_rectangle_filled(WIDTH/2, HEIGHT/2 - 60,
-                                 150, 100, arcade.color.GRAY_BLUE)
-    arcade.draw_text("Restart", WIDTH/2, HEIGHT/2 - 60,
-                     arcade.color.BLACK, anchor_x="center")
+    arcade.draw_text("Press R to Restart", WIDTH/2, HEIGHT/2 - 60,
+                     arcade.color.BLACK, font_size=20, anchor_x="center")
 
 
 def draw_game_win():
-    arcade.set_background_color(arcade.color.ORANGE_PEEL)
+    arcade.set_background_color(arcade.color.PURPLE_MOUNTAIN_MAJESTY)
     arcade.draw_text("Congratulations!", WIDTH/2, HEIGHT/2,
                      arcade.color.BLACK, font_size=48, anchor_x="center")
+    arcade.draw_text("Press R to Resatrt", WIDTH/2, HEIGHT/2 - 60,
+                     arcade.color.BLACK, font_size=20, anchor_x="center")
 
 
 def on_key_press(key, modifiers):
-    global current_screen, player_x, player_y, balls_x, balls_y
+    global current_screen, player_x, player_y, balls_x, balls_y, ball4_y
+    global ball1_x, ball1_y, ball2_x, ball2_y, ball3_x, ball3_y, ball4_x
 
     if current_screen == "menu":
         if key == arcade.key.I:
@@ -153,6 +165,8 @@ def on_key_press(key, modifiers):
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
         key_press(key, modifiers)
+        if player_x > WIDTH/2 + 4.5 * a:
+            current_screen = "game_win"
 
         i = 0
         while i < 4:
@@ -161,10 +175,9 @@ def on_key_press(key, modifiers):
                 break
             i += 1
 
-#        if ball1_x - 12.5 < playe
-
-        if player_x > WIDTH/2 + 4.5 * a:
-            current_screen = "game_win"
+    elif current_screen == "game_over" or current_screen == "game_win":
+        if key == arcade.key.R:
+            current_screen = "play"
 
 
 def key_press(key, modifiers):
@@ -242,3 +255,4 @@ def on_mouse_press(x, y, button, modifiers):
 
 if __name__ == '__main__':
     setup()
+
